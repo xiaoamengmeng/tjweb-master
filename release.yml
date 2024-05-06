@@ -1,0 +1,32 @@
+version: '3'
+  
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - API_SERVER=https://api.jixianghealth.com
+        - SITE=default
+        - SITE_NAME=吉享健康代谢健康服务平台
+        - IM_APP_ID=1400795202
+    image: ccr.ccs.tencentyun.com/tangji/tangji_web_production
+    platform: linux/amd64
+    restart: always
+    ports:
+      - "6000:80"
+
+  nginx-admin:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - API_SERVER=https://api.jixianghealth.com
+        - SITE=admin
+        - SITE_NAME=吉享健康系统管理后台
+        - IM_APP_ID=1400795202
+    image: ccr.ccs.tencentyun.com/tangji/tangji_admin_production
+    platform: linux/amd64
+    restart: always
+    ports:
+      - "6100:80"

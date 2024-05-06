@@ -1,0 +1,51 @@
+version: '3'
+networks:
+  proxy:
+    external: true
+  
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - API_SERVER=https://api.staging.jixianghealth.com
+        - SITE=default
+        - SITE_NAME=吉享健康代谢健康服务平台
+        - IM_APP_ID=1400805532
+    image: ccr.ccs.tencentyun.com/tj_web/tangji_web_production
+    platform: linux/amd64
+    restart: always
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.tjweb.rule=Host(`www.staging.jixianghealth.com`)"
+      - "traefik.http.routers.tjweb.entrypoints=websecure"
+      - "traefik.http.routers.tjweb.service=tjweb-service"
+      - "traefik.http.services.tjweb-service.loadbalancer.server.port=80"
+      - "traefik.http.routers.tjweb.tls.certresolver=myresolver"
+
+  nginx-admin:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - API_SERVER=https://api.staging.jixianghealth.com
+        - SITE=admin
+        - SITE_NAME=吉享健康系统管理后台
+        - IM_APP_ID=1400805532
+    image: ccr.ccs.tencentyun.com/tj_web/tangji_admin_production
+    platform: linux/amd64
+    restart: always
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.tjadmin.rule=Host(`admin.staging.jixianghealth.com`)"
+      - "traefik.http.routers.tjadmin.entrypoints=websecure"
+      - "traefik.http.routers.tjadmin.service=tjadmin-service"
+      - "traefik.http.services.tjadmin-service.loadbalancer.server.port=80"
+      - "traefik.http.routers.tjadmin.tls.certresolver=myresolver"

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康评估问卷</title>
+    <!-- 引入样式 -->
+    <script src="https://cdn.staticfile.org/vue/2.6.11/vue.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="../config/config.js"></script>
+    
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
+        #app {
+            padding: 20px;
+        }
+
+        .header-title {
+            width: 100%;
+            text-align: center;
+            font-size: 24px;
+            line-height: 50px;
+            font-weight: 700;
+        }
+
+        .title {
+            color: black;
+            font-size: 20px;
+            line-height: 40px;
+            font-weight: 500;
+        }
+        .title1 {
+            color: black;
+            font-size: 18px;
+            line-height: 36px;
+            font-weight: 400;
+        }
+        .detail {
+            color: #00A29A;
+            font-size: 16px;
+            line-height: 30px;
+            margin-right: 20px;
+        }
+        .flex-row {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner {
+            background-color: #00A29A !important;
+            border-color: #00A29A !important;
+        }
+
+        .el-checkbox__input.is-checked+.el-checkbox__label {
+            color: #00A29A !important;
+        }
+
+        .el-checkbox:last-of-type {
+            margin-right: 0;
+            margin-bottom: 5px;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div id="app">
+        <div class="header-title">健康评估问卷</div>
+        <div>
+            <div class="title">
+                基本信息
+            </div>
+            <div class="flex-row">
+                <div v-if="data.patient" class="detail">姓名：{{ data.patient.name }}</div>
+                <div class="detail">性别：{{ getSex(data.sex) }}</div>
+                <div class="detail">出生日期：{{ data.birthday }}</div>
+            </div>
+        </div>
+
+        <div>
+            <div class="title">
+                生理数据
+            </div>
+            <div>
+                <div class="title1">
+                    体格检查
+                </div>
+                <div class="flex-row">
+                    <div class="detail">身高：{{ data.height }}厘米</div>
+                    <div class="detail">体重：{{ data.weight }}公斤</div>
+                    <div class="detail" v-if="data.waistline">腰围：{{ data.waistline }}厘米</div>
+                    <div class="detail" v-if="data.hipline">臀围：{{ data.hipline }}厘米</div>
+                    <div class="detail" v-if="data.whr">腰臀比：{{ data.whr }}</div>
+                    <div class="detail" v-if="data.bmi">BMI：{{ data.bmi }}</div>
+                </div>
+            </div>
+            <div>
+                <div class="title1">
+                    血压
+                </div>
+                <div class="flex-row">
+                    <div class="detail">高压：{{ data.high_pressure }}mmHg</div>
+                    <div class="detail">低压：{{ data.low_pressure }}mmHg</div>
+                    <div class="detail">安静心率：{{ data.rest_heartrate }}次/分钟</div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="title">
+                生化数据
+            </div>
+            <div>
+                <div class="title1">
+                    糖代谢
+                </div>
+                <div class="flex-row">
+                    <div class="detail" v-if="data.fbg">空腹血糖：{{ data.fbg }}mmol/l</div>
+                    <div class="detail" v-if="data.bg_30">餐后30分钟血糖：{{ data.bg_30 }}mmol/l</div>
+                    <div class="detail" v-if="data.bg_60">餐后60分钟血糖：{{ data.bg_60 }}mmol/l</div>
+                    <div class="detail" v-if="data.bg_120">餐后120分钟血糖：{{ data.bg_120 }}mmol/l</div>
+                </div>
+            </div>
+            <div>
+                <div class="title1">
+                    血脂
+                </div>
+                <div class="flex-row">
+                    <div class="detail" v-if="data.tch">总胆固醇：{{ data.tch }}mmol/l</div>
+                    <div class="detail" v-if="data.triglyceride">甘油三脂：{{ data.triglyceride }}mmol/l</div>
+                    <div class="detail" v-if="data.ldl">低密度脂蛋白：{{ data.ldl }}mmol/l</div>
+                    <div class="detail" v-if="data.hdl">高密度脂蛋白：{{ data.hdl }}mmol/l</div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="title">
+                病史情况
+            </div>
+            <div class="flex-row">
+                <div class="detail" v-if="data.phi">现病史：{{ data.phi.join("、") }}</div>
+                <div class="detail" v-if="data.family_illness">家族病史：{{ data.family_illness.join("、") }}</div>
+            </div>
+        </div>
+        
+        <div>
+            <div class="title">
+                运动水平
+            </div>
+            <div>
+                <div>
+                    <div class="detail">1. 在过去的6个月，您主动进行运动的情况</div>
+                    <div v-for="(item, index) in half_year_levels" :key="index">
+                        <el-checkbox :disabled="true" v-model="data.half_year_level == item.id">{{ item.name }}</el-checkbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="title">
+                运动风险
+            </div>
+            <div>
+                <div>
+                    <div class="detail">1. 一般运动风险</div>
+                    <div v-for="(item, index) in normal_execrse_risks" :key="index">
+                        <el-checkbox :disabled="true" :value="data.normal_execrse_risk.includes(item.id)">{{ item.name }}</el-checkbox>
+                    </div>
+                </div>
+                <div>
+                    <div class="detail">2. 高血压运动风险</div>
+                    <div v-for="(item, index) in hp_exercise_risks" :key="index">
+                        <el-checkbox :disabled="true" :value="data.hp_exercise_risk.includes(item.id)">{{ item.name }}</el-checkbox>
+                    </div>
+                </div>
+                <div>
+                    <div class="detail">3. 高血糖运动风险</div>
+                    <div v-for="(item, index) in hs_exercise_risks" :key="index">
+                        <el-checkbox :disabled="true" :value="data.hs_exercise_risk.includes(item.id)">{{ item.name }}</el-checkbox>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="title">
+                生活方式
+            </div>
+            <div>
+                <div class="title1">
+                    饮食
+                </div>
+                <div>
+                    <div>
+                        <div class="detail">1. 每一餐的口味基本上都保持清淡少油？</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.light_diet == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="detail">2. 您每天按时就餐吗？</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.ontime_diet == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="detail">3. 您平时吃饭都吃七八分饱？</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.moderate_diet == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="detail">4. 您每天吃早餐吗？</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.breakfast == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="detail">5. 您吃零食吗？</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.snake == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="title1">
+                    运动
+                </div>
+                <div>
+                    <div>
+                        <div class="detail">1. 您进行中等强度的运动，例如快走或游泳，坚持每周运动3-5天，每天20-60分钟？</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.intensity_exercise == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="detail">2. 您花一部分业余时间参加个人、家庭或集体活动，例如散步、打保龄球或者羽毛球、乒乓球？</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.spare_exercise == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="title1">
+                    吸烟
+                </div>
+                <div>
+                    <div>
+                        <div class="detail">1. 您是否吸烟？</div>
+                        <div v-for="(item, index) in smokes" :key="index">
+                            <el-checkbox :disabled="true" :value="data.smoke == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                    <div v-if="data.smoke == 1">
+                        <div class="detail">2. 您有意识控制使用烟草？（如戒烟或者有意识克制、减少吸烟）</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.smoke_control == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                    <div v-if="data.smoke == 1">
+                        <div class="detail">3. 您只吸尼古丁含量低的香烟，或抽烟斗或雪茄，或使用无烟烟草？</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.nicotine_control == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="title1">
+                    酒精与药物
+                </div>
+                <div>
+                    <div>
+                        <div class="detail">1. 您不喝酒，或每天喝酒不多于2次？</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.drink == item.id">
+                                {{ item.optName }}
+                            </el-checkbox>
+                            <div style="color: #00A29A !important; font-size: 14px; line-height: 19px; padding-left: 22px;" v-if="data.drink == item.id && data.drink != 'H'">
+                                <span v-if="data.liquor">白酒：{{ data.liquor }}两/天</span>
+                                <span v-if="data.beer">啤酒：{{ data.beer }}瓶/天</span>
+                                <span v-if="data.wine">葡萄酒等果酒：{{ data.wine }}毫升/天</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="detail">2. 在使用处方药和非处方药时，您都先看说明书，并按照说明用药？</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.normal_medication == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="title1">
+                    压力
+                </div>
+                <div>
+                    <div>
+                        <div class="detail">1. 您有工作或有自己喜欢做的其他工作？</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.worker == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="detail">2. 您很容易放松，并可以自由表达感情？</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.relax == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="detail">3. 您乐于参加团体活动并有自己的兴趣爱好？</div>
+                        <div v-for="(item, index) in light_diets" :key="index">
+                            <el-checkbox :disabled="true" :value="data.hobby == item.id">{{ item.optName }}</el-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                half_year_levels: [
+                    { id: 'H', name: '每周运动超过或刚好3天，保持运动习惯6个月以上' },
+                    { id: 'M', name: '每周运动超过或刚好3天，保存运动习惯6个月以内' },
+                    { id: 'L', name: '每周运动次数少于3天' },
+                    { id: 'N', name: '基本不运动' },
+                ],
+                normal_execrse_risks: [
+                    { id: 1, name: '没有以下任何问题' },
+                    { id: 2, name: '有心脏问题，必须在医生指导下才能运动' },
+                    { id: 3, name: '在进行身体活动时有过胸痛的感觉' },
+                    { id: 4, name: '过去的一个月中，在不运动时感到过胸痛' },
+                    { id: 5, name: '因为头晕曾经跌倒或晕过去' },
+                    { id: 6, name: '因为运动引起过骨关节疼痛' },
+                    { id: 7, name: '正在服用治疗心脏病的药' },
+                    { id: 8, name: '有其他原因限制运动' },
+                ],
+                hp_exercise_risks: [
+                    { id: 1, name: '没有以下任何问题' },
+                    { id: 2, name: '您的血压在用药后仍收缩压超过180、舒张压超过110mmHg，或血压波动较大（如各时段的血压值相差超过10%）' },
+                    { id: 3, name: '血压高是因肾囊肿、肾动脉狭窄、主动脉狭窄、甲亢等疾病所引起' },
+                    { id: 4, name: '高血压超过180/110 mmHg、并有眩晕、恶心、呕吐等表现' },
+                    { id: 5, name: '已经存在心力衰竭、心绞痛、视网膜出血和严重的心律失常等并发症' },
+                ],
+                hs_exercise_risks: [
+                    { id: 1, name: '没有以下任何问题' },
+                    { id: 2, name: '血糖水平经常忽高忽低、控制不稳' },
+                    { id: 3, name: '您在治疗过程中经常发生低血糖' },
+                    { id: 4, name: '空腹血糖超过16.7mmol/L，并有酮症' },
+                    { id: 5, name: '出现合并视网膜出血或感染、不稳定心绞痛及其他急性病症' },
+                    { id: 6, name: '患有高血压并且治疗效果不好' },
+                    { id: 7, name: '空腹血糖超过16.7mmol/L' },
+                    { id: 8, name: '存在足部的破溃或感染' },
+                    { id: 9, name: '有严重或增殖性视网膜病变' },
+                ],
+                light_diets: [
+                    {
+                      id: 'H',
+                      optName: '经常',
+                    },
+                    {
+                      id: 'M',
+                      optName: '有时',
+                    },
+                    {
+                      id: 'L',
+                      optName: '很少或从不',
+                    },
+                ],
+                smokes: [
+                    {
+                      id: 1,
+                      optName: '是',
+                    },
+                    {
+                      id: 0,
+                      optName: '否',
+                    },
+                ],
+                data: {}
+            },
+            mounted() {
+                const decodeStr = atob(window.location.search.substring(1, window.location.search.length));
+                const data = this.getUrlParam('?' + decodeStr, 'user_id')
+                
+                fetch(window.config.SERVERS_URL + '/api/questionnaire/?patient=' + data + '&ordering=-updated_at')
+                    .then(ret => ret.json())
+                    .then(json => {
+                        this.data = json.results[0]
+                    })
+            },
+
+            methods: {
+                //获取地址栏属性，name 为参数名称
+                getUrlParam(search, name) {
+                    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+                    var r = search.substr(1).match(reg); //匹配目标参数
+                    if (r != null) return unescape(r[2]);
+                    return null; //返回参数值
+                },
+                getSex(sex) {
+                    if (sex == 'M') {
+                        return '男'
+                    }
+                    return '女'
+                }
+            },  
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+@charset "utf-8";
+/* CSS Document */
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary {display:block}
+blockquote, body, button, dd, div, dl, dt, em, fieldset, form, h1, h2, h3, h4, h5, h6, img, input, li, ol, p, strong, table, td, tr, ul {padding:0;margin:0}
+html {height:100%;}
+body {font:27px Microsoft YaHei, arial, helvetica, verdana, tahoma, sans-serif;color:#fff;overflow-x:hidden;background-color:#e8eaea;margin:0 auto;min-height:100%;}
+fieldset, figure, img {border:0}
+li, ol, ul {list-style:none}
+table {border-collapse:collapse;border-spacing:0}
+img {vertical-align:middle}
+*html .clearfix {height:1%}
+a {color:inherit;text-decoration:none;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+a:hover {color:#fff}
+.mt1{padding-top:1%}
+.mt3{padding-top:3%}
+.white{ background-color:#fff;}
+.red{ color:#e73b3e;}
+*{ -webkit-tap-highlight-color:rgba(0,0,0,0);} /*去掉a、input和button点击时的蓝色外边框和灰色半透明背景*/
+input:focus,select:focus,a:focus{
+    outline: 0;
+}
+
+/*二维码下载*/
+.content{background-color: rgba(0,0,0,0.8); width:100%;position:fixed; bottom:2%; }
+.box-size{box-sizing:border-box;overflow: hidden;max-width:640px; margin-left:auto; margin-right:auto;}
+.box-size a{margin:0 auto;}
+.item{padding:1rem;line-height:1.7857rem;display:block;position:relative;}
+.content-left{width:25%;display:inline-block;vertical-align:top;}
+.item-title{color:#fff;text-align: center;}
+.icons{width:60px}
+.edition{width:100%;}
+.a_down1{position: absolute;top:50%;left: 50%;margin-top: -20px;margin-left: -20px;}
+.cc{ width:60px; margin-left: auto; margin-right:auto;}
+
+/*下载黑色背景*/
+.down{ width:100%;height:auto; background-color:#008be6; opacity:0.8; position:fixed; bottom:2%; color:#FFF;}
+.icon-down{ float:left; width:20%; padding:4% 0 4% 18%;}
+.icon-down>img{ width:80%; opacity:1; }
+.txt-down{float:left; width:50%; opacity:1; font-family:"微软雅黑"; line-height:200%; padding:6% 4% 4% 2%;}
+.txt-down>.txt-tit{ font-size:2em;}
+.novice_img img{width:100%;max-width:720px;height:auto;vertical-align:middle;text-align: center;}
+.wz30{font-size:1.1em;color:#e3334b; line-height:24px;text-align: center; padding-top:1%; background-color:#fff;}
+.wzh30{font-size:1.1em;color:#333; line-height:24px;text-align: center; padding-top:1%; padding-bottom:30%;background-color:#fff;}
+
+
+/*芝麻开门*/
+.zmkm{width:100%;margin-top:10%;line-height:100%;overflow: hidden; }
+.merchant{ width:60%; margin: 0 auto;overflow: hidden;position:relative}
+.logo{width:100%;}
+.logo>img{width:100%;}
+.code{width:100%;color:#3fa83d;margin-bottom:0;top:63%;margin-top:12%; margin-bottom:5%;text-align: center;font-size:1.2em;}
+.award{text-align: center;  margin-bottom:10%; color:#333; font-size:1.4em;}
+.pay_attention_to{width:80%; margin: 0 auto; background-color:#3fa83d;text-align: center; border-radius:5px; line-height:260%;font-size:1.25em;}
+.qr_code{width:64%; margin: 0 auto; background-color:#3fa83d; padding:8%; margin-top:3%;}
+.qr_code>img{width:100%;}
+.wz30{font-size:1.25em;color:#3fa83d; line-height:24px;text-align: center; padding-top:1%; background-color:#fff;padding-bottom:38%; margin-top:3%;}
+.novice_img img{width:100%;height:auto;vertical-align:middle;text-align: center;}

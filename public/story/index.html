@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>减重故事</title>
+    <!-- 引入样式 -->
+    <script src="https://cdn.staticfile.org/vue/2.6.11/vue.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
+    <script src="../config/config.js"></script>
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
+        #app {
+            padding: 20px;
+        }
+        .top {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .top-content {
+            justify-content: space-between;
+        }
+        .top-detail {
+            font-size: 14px;
+            margin-left: 8px;
+        }
+        .top-detail1 {
+            font-size: 14px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: #333333;
+            line-height: 20px;
+        }
+        .top-detail2 {
+            font-size: 8px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #999999;
+            line-height: 10px;
+            margin-top: 10px;
+        }
+        .middle {
+            font-size: 14px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #666666;
+            line-height: 20px;
+            margin-top: 15px;
+        }
+        .bottom {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        .bottom-item {
+            background: #D8D8D8;
+            border-radius: 4px;
+            width: calc((100vw - 40px - 32px) / 3);
+            height: calc((100vw - 40px - 32px) / 3);
+            margin-bottom: 16px;
+        }
+
+        .title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .item-top {
+            margin-top: 10px;
+        }
+
+        .header {
+            font-size: 16px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 600;
+            color: #333333;
+            line-height: 20px;
+        }
+
+        .detail {
+            font-size: 14px;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 400;
+            color: #666666;
+            line-height: 18px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <div class="title">
+                {{ data.title }}
+            </div>
+            <div class="top top-content">
+                <div class="top">
+                    <el-avatar v-if="data.user" :size="26" :src="data.user.avatar_url">
+                        <img src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"/>
+                    </el-avatar>
+                    <div class="top-detail">
+                        <div v-if="data.user" class="top-detail1">{{ data.user.name }}</div>
+                    </div>
+                </div>
+                <div class="top-detail2">{{ dayjs(data.created_at).format("YYYY-MM-DD HH:mm:ss") }}</div>
+            </div>
+            <div v-if="data.content_type == 'video'" >
+                <video v-if="data.video" controls style="width: 100%; margin-top: 20px;" :src="data.video.file"></video>
+            </div>
+            <div v-else>
+                <div class="item-top header">主人公介绍</div>
+                <div class="item-top detail">{{ data.introduce }}</div>
+                <el-image class="item-top" v-if="data.introduce_image_path && data.introduce_image_path.length > 0" :src="data.introduce_image_path"></el-image>
+                <div class="item-top detail">before</div>
+                <el-image class="item-top" v-if="data.exp_image_before_path && data.exp_image_before_path.length > 0" :src="data.exp_image_before_path"></el-image>
+                <div class="item-top detail">after</div>
+                <el-image class="item-top" v-if="data.exp_image_after_path && data.exp_image_after_path.length > 0" :src="data.exp_image_after_path"></el-image>
+                <div class="item-top header">为什么要减脂？</div>
+                <div class="item-top detail">{{ data.why_reduce_weight }}</div>
+                <!-- <div class="item-top header">为什么选择胃转流支架？</div>
+                <div class="item-top detail">{{ data.why_wei_zhuan_liu }}</div>
+                <el-image class="item-top" v-for="(item, index) in data.why_picture_path" :key="index" :src="item">
+                    
+                </el-image> -->
+    
+                <div class="item-top header">减重心路历程和经验分享</div>
+                <div class="item-top detail">{{ data.exp }}</div>
+                <el-image class="item-top" v-for="(item, index) in data.exp_image" :key="index" :src="item">
+                    
+                </el-image>
+    
+                <div class="item-top header">减重成功后有哪些变化？</div>
+                <div class="item-top detail">{{ data.change }}</div>
+                <div class="item-top detail" v-if="data.image_before_path && data.image_before_path.length > 0">减脂前</div>
+                <el-image class="item-top" v-for="(item, index) in data.image_before_path" :key="index" :src="item">
+                    
+                </el-image>
+                <div class="item-top detail" v-if="data.image_after_path && data.image_after_path.length > 0">减脂后</div>
+                <el-image class="item-top" v-for="(item, index) in data.image_after_path" :key="index" :src="item">
+                    
+                </el-image>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                data: {}
+            },
+            mounted() {
+                const decodeStr = atob(window.location.search.substring(1, window.location.search.length));
+                const data = this.getUrlParam('?' + decodeStr, 'id')
+                fetch(window.config.SERVERS_URL + '/api/reduce_weight_story/' + data + '/')
+                    .then(ret => ret.json())
+                    .then(json => {
+                        this.data = json
+                    })
+            },
+            methods: {
+                //获取地址栏属性，name 为参数名称
+                getUrlParam(search, name) {
+                    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+                    var r = search.substr(1).match(reg); //匹配目标参数
+                    if (r != null) return unescape(r[2]);
+                    return null; //返回参数值
+                }
+            }, 
+        })
+    </script>
+</body>
+</html>

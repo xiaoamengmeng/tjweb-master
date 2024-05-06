@@ -1,0 +1,58 @@
+export default {
+  "id": null,
+  "weight_stats": [
+    {
+      "date": null,
+      "weight": null,
+      "waistline": null
+    },
+  ],
+  "exercise_stats": [],
+  "diet_stats": [],
+  "blood_sugar_stats": [
+    {
+      "date": null,
+      "avg": null
+    }
+  ],
+  "created_at": null,
+  "updated_at": null,
+  "report_date": null,
+  "title": null,
+  "data_time_from": null,
+  "data_time_to": null,
+  "weight_record_days": null,
+  "weight_record_count": null,
+  "weight_change": null,
+  "weight_diff_from_last_week": null,
+  "weight_max": null,
+  "weight_min": null,
+  "weight_avg": null,
+  "weight_first": null,
+  "weight_latest": null,
+  "weight_to_target": null,
+  "weight_forward_percent": null,
+  "bmi": null,
+  "waistline_avg": null,
+  "waistline_change": null,
+  "waistline_max": null,
+  "waistline_min": null,
+  "waistline_first": null,
+  "waistline_latest": null,
+  "diet_record_days": null,
+  "diet_record_count": null,
+  "eat_calories_recommended": null,
+  "eat_calories_sum": null,
+  "eat_calories_min": null,
+  "eat_calories_max": null,
+  "eat_calories_sum_last_week": null,
+  "eat_calories_change": null,
+  "exercise_minutes_sum": null,
+  "exercise_record_days": null,
+  "exercise_record_count": null,
+  "exercise_calories_recommended": null,
+  "exercise_calories_sum": null,
+  "exercise_calories_min": null,
+  "exercise_calories_max": null,
+  "patient": null
+}

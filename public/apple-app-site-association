@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "UYM79AFF4M.com.jixianghealth.app",
+                "paths": ["*"]
+            }
+        ]
+    }
+}

@@ -1,0 +1,30 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  // overflow-x: auto;
+  height: 100%;
+}
+#app {
+  height: 100%;
+}
+
+.disableFirstLevel {
+  .el-cascader-panel {
+    .el-scrollbar:first-child {
+      .el-checkbox {
+        display: none;
+      }
+    }
+    .el-scrollbar:nth-child(2) {
+      .el-cascader-node__postfix {
+        display: none;
+      }
+    }
+    .el-scrollbar:nth-child(3) {
+      .el-cascader-node__postfix {
+        display: none;
+      }
+    }
+  }
+}

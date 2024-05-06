@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健康评估报告</title>
+    <!-- 引入样式 -->
+    <script src="https://cdn.staticfile.org/vue/2.6.11/vue.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="../config/config.js"></script>
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+        }
+
+        #app {
+            width: 70%;
+            margin-left: 15%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-content {
+            padding-top: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-end;
+            width: 100%;
+            padding-bottom: 30px;
+        }
+
+        .header-title {
+            display: inline;
+            /* width: 100%;
+            text-align: center; */
+            font-size: 24px;
+            line-height: 50px;
+            font-weight: 700;
+            padding-left: 120px;
+        }
+
+        .time {
+            /* width: 100%;
+            text-align: center; */
+            font-size: 12px;
+            line-height: 20px;
+            margin-bottom: 10px;
+            margin-left: 10px;
+        }
+
+        .radio-group {
+            width: 100%;
+            height: 46px;
+            border-radius: 23px;
+            /* background-color: #C0E9D4; */
+            background-color: #eeeeee;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .el-radio-button .el-radio-button__inner {
+            width: 120px;
+            height: 34px;
+            line-height: 34px;
+            padding: 0;
+            border-radius: 17px;
+            border: none;
+            user-select: none;
+            color: #219678;
+            background-color: #D4ECE6;
+        }
+
+        .el-radio-button__orig-radio:checked+.el-radio-button__inner {
+            background-color: #ffffff;
+            color: #219678;
+            border-width: 0px;
+            -webkit-box-shadow: 0 0 0 0 #219678;
+            box-shadow: 0 0 0 0 #219678;
+        }
+        .el-radio-button:first-child .el-radio-button__inner {
+            border-left: 0px solid #DCDFE6;
+            border-radius: 17px;
+        }
+
+        .el-radio-button:last-child .el-radio-button__inner {
+            border-radius: 17px;
+        }
+
+        .el-radio-button.is-active {
+            border: none;
+        }
+
+        .el-radio-button__inner {
+            height: 34px;
+            line-height: 34px;
+            padding: 0;
+            background: #344563;
+            border: none;
+            user-select: none;
+            color: #fff;
+        }
+
+        .el-radio-button:focus:not(.is-focus):not(:active):not(.is-disabled) {
+            box-shadow: unset;
+        }
+
+        .envelope {
+            width: 80%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #ffffff;
+            padding-top: 80px;
+            padding-bottom: 50px;
+        }
+
+        .envelope-title {
+            font-size: 30px;
+            line-height: 40px;
+            font-weight: 700;
+            margin-bottom: 100px;
+        }
+
+        .envelope-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-top: 40px;
+        }
+        .envelope-item div:first-child {
+            width: 80px;
+        }
+        .envelope-item div:last-child {
+            border-bottom: 1px solid black;
+            width: 300px;
+            height: 24px;
+            text-align: center;
+        }
+
+        .healthSummary {
+            width: 90%;
+        }
+
+        .healthSummary-item {
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .healthSummary-title {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            padding-bottom: 8px;
+        }
+
+        .healthSummary-title-text {
+            margin-left: 10px;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .line {
+            width: 3px;
+            height: 12px;
+            background: #219678;
+            border-radius: 1px
+        }
+
+        .healthSummary-detail {
+            border-radius: 4px;
+            border: 1px solid rgba(0,0,0,0.1);
+            margin-top: 10px;
+        }
+
+        .healthSummary-detail-item {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            line-height: 34px;
+        }
+        .healthSummary-detail-item-background {
+            background-color: #FAFAFA;
+        }
+        .background-white {
+            background-color: #ffffff;
+        }
+        .background-white1 {
+            background-color: #ffffff;
+            height: 34px;
+        }
+        .border-left {
+            border-left: 1px solid rgba(0,0,0,0.1);
+        }
+        .border-right {
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+        .border-bottom {
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .healthSummary-detail-item div:first-child {
+            text-align: center;
+        }
+        .healthSummary-detail-item div:last-child {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .healthSummary-detail1 {
+            margin-top: 10px;
+        }
+
+        .healthSummary-detail1-item {
+            background-color: #F8F8F8;
+            border-radius: 2px;
+            margin-bottom: 10px;
+        }
+        .healthSummary-detail1-item div:last-child {
+            color: #ffffff;
+        }
+
+        .detail4-item {
+            display: flex; 
+            flex-direction: row; 
+            align-items: center;
+            justify-content: center;
+        }
+
+        .detail4-item div:first-child {
+            width: 14px; 
+            height: 14px; 
+            background-color: #E84E4D;
+            margin-right: 5px;
+        }
+
+        .detail3-item {
+            display: flex; 
+            flex-direction: column; 
+            align-items: center;
+            justify-content: center;
+        }
+
+        .detail3-item-info {
+            width: 20%;
+            height: 230px;
+            margin-bottom: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .scale-content {
+            width: 100%;
+            height: 224px;
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .detail3-content {
+            position: relative;
+        }
+
+        .scale-line {
+            position: absolute; 
+            width: 83%; 
+            height: 0px; 
+            top: 30px; 
+            border-top: 1px dashed #ECECEC; 
+            z-index: -1;
+            margin-left: 14%;
+        }
+
+        .num-text {
+            font-size: 24px;
+            font-weight: 400;
+            color: #e84e4d;
+            margin-bottom: 8rpx;
+        }
+
+        .run-chart {
+            height: 320px;
+            position: relative;  
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .run-line {
+            /* width: 618px; */
+            height: 100%;
+            position: absolute;
+            /* top: 0;
+            left: 4px; */
+            z-index: 2;
+        }
+
+        .run-bg-wrap {
+            width: 792px;
+            height: 100%;
+            position: absolute;
+            /* top: 0;
+            left: 10rpx; */
+            z-index: 1;
+            background-color: #ececec;
+        }
+
+        .run-bg-bar {
+            background: linear-gradient(90deg, rgba(45, 206, 137, 1), rgba(45, 206, 204, 1));
+            height: 100%;
+            width: 0px;
+        }
+
+        .drop {
+            width: 38px;
+            height: 38px;
+            background-color: #fdfdfe;
+            border-radius: 50%;
+            box-shadow: 0px 0px 20px 0px #e5e6ef;
+            padding: 10px;
+            box-sizing: border-box;
+            position: absolute;
+            z-index: 8;
+        }
+
+        .drop-cir {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-color: #66d5d4;
+        }
+
+        .plan {
+            position: absolute;
+            z-index: 8;
+        }
+
+        .plan-icon {
+            width: 70px;
+            height: 76px;
+        }
+
+        .run-chart-state0 .run-bg-wrap .run-bg-bar {
+            width: 0% !important;
+        }
+        .run-chart-state1 .run-bg-wrap .run-bg-bar {
+            width: 35% !important;
+        }
+        .run-chart-state2 .run-bg-wrap .run-bg-bar {
+            width: 65% !important;
+        }
+        .run-chart-state3 .run-bg-wrap .run-bg-bar {
+            width: 100% !important;
+        }
+
+        .run-chart-state0 .drop {
+            left: 50px;
+            top: 264px;
+        }
+        .run-chart-state1 .drop {
+            left: 312px;
+            top: 243px;
+        }
+        .run-chart-state2 .drop {
+            left: 550px;
+            top: 183px;
+        }
+        .run-chart-state3 .drop {
+            left: 812px;
+            top: 56px;
+        }
+
+        .run-chart-state0 .plan {
+            top: 157px;
+            left: 34px;
+        }
+        .run-chart-state1 .plan {
+            top: 132px;
+            left: 295px;
+        }
+        .run-chart-state2 .plan {
+            top: 74px;
+            left: 533px;
+        }
+        .run-chart-state3 .plan {
+            top: -50px;
+            left: 793px;
+        }
+
+    </style>
+
+</head>
+<body>
+    <div id="app">
+        <div class="header-content">
+            <div class="header-title">评估报告</div>
+            <div class="time">{{ jsDateFormatter(data.created_at) }} 发布</div>
+        </div>
+        <div style="width: 100%">
+            <el-radio-group class="radio-group" v-model="viewsMode">
+                <el-radio-button label="封皮"></el-radio-button>
+                <el-radio-button label="健康汇总"></el-radio-button>
+                <el-radio-button v-if="data.hp_risk != '您已患高血压'" label="高血压风险评估"></el-radio-button>
+                <el-radio-button v-if="data.dm_risk != '您已患糖尿病'" label="糖尿病风险评估"></el-radio-button>
+                <el-radio-button v-if="data.stroke_risk != '您已患脑卒中'" label="脑卒中风险评估"></el-radio-button>
+                <el-radio-button label="封底"></el-radio-button>
+            </el-radio-group>
+        </div>
+        <template v-if="viewsMode == '封皮'">
+            <div class="envelope">
+                <div class="envelope-title">个人健康评估报告</div>
+                <div class="envelope-item">
+                    <div>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</div>
+                    <div>{{ data.patient ? data.patient.name : '' }}</div>
+                </div>
+                <div class="envelope-item">
+                    <div>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</div>
+                    <div>{{ getSex(data.sex) }}</div>
+                </div>
+                <div class="envelope-item">
+                    <div>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄：</div>
+                    <div>{{ data.age }}</div>
+                </div>
+                <div class="envelope-item">
+                    <div>联系方式：</div>
+                    <div>{{ data.patient ? data.patient.phone_number : '' }}</div>
+                </div>
+                <div class="envelope-item">
+                    <div>评估日期：</div>
+                    <div>{{ jsDateFormatter(data.created_at, true) }}</div>
+                </div>
+            </div>
+        </template>
+        <template v-if="viewsMode == '健康汇总'">
+            <div class="healthSummary" style="padding-bottom: 50px;">
+
+                <div class="healthSummary-item">
+                    <div class="healthSummary-title">
+                        <div class="line"></div>
+                        <div class="healthSummary-title-text">主要健康问题</div>
+                    </div>
+                    <div class="healthSummary-detail">
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="6" class="border-right">现患疾病</el-col>
+                            <el-col :span="18" class="background-white">{{ data.present_illness ? data.present_illness.join('、') : ' ' }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="6" class="border-right">家族史</el-col>
+                            <el-col :span="18" class="background-white">{{ data.family_illness ? data.family_illness.join('、') : ' ' }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background">
+                            <el-col :span="6" class="border-right">异常指标</el-col>
+                            <el-col :span="18" class="background-white">{{ data.abnormal_item ? data.abnormal_item.join('、') : ' ' }}</el-col>
+                        </el-row>
+                    </div> 
+                </div>
+
+                <div class="healthSummary-item">
+                    <div class="healthSummary-title">
+                        <div class="line"></div>
+                        <div class="healthSummary-title-text">慢性病发病风险</div>
+                    </div>
+                    <div class="healthSummary-detail1">
+                        <el-row class="healthSummary-detail-item healthSummary-detail1-item">
+                            <el-col :span="6">高血压：</el-col>
+                            <el-col :span="18" style="padding-top: 10px; padding-bottom: 10px;">
+                                <div style="background-color: #E84E4D; display: inline-block; border-radius: 2px;text-align: left;">
+                                    {{ data.hp_risk }}
+                                </div>
+                            </el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail1-item">
+                            <el-col :span="6">糖尿病：</el-col>
+                            <el-col :span="18" style="padding-top: 10px; padding-bottom: 10px;">
+                                <div style="background-color: #55AEEF; display: inline-block; border-radius: 2px;text-align: left;">
+                                    {{ data.dm_risk }}
+                                </div>
+                            </el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail1-item">
+                            <el-col :span="6">脑卒中：</el-col>
+                            <el-col :span="18" style="padding-top: 10px; padding-bottom: 10px;">
+                                <div style="background-color: #FDBC20; display: inline-block; border-radius: 2px; text-align: left;">
+                                    {{ data.stroke_risk }}
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </div>
+
+                <div class="healthSummary-item">
+                    <div class="healthSummary-title">
+                        <div class="line"></div>
+                        <div class="healthSummary-title-text">运动水平</div>
+                    </div>
+                    <div class="healthSummary-detail1">
+                        <el-row style="text-align: center; margin-top: 50px;">
+                            <el-col span="24" :class="'run-chart ' + ('run-chart-state' + data.exercise_level)">
+                                <div class="run-bg-wrap">
+                                    <div class="run-bg-bar"></div>
+                                </div>
+                    
+                                <div class="drop">
+                                    <div class="drop-cir"></div>
+                                </div>
+                                <div class="plan">
+                                    <image class="plan-icon" :src="`https://tangji-1303867602.cos.ap-beijing.myqcloud.com/static/images/pages_health_ast/ydxr.png`" mode="aspectFit"></image>
+                                    <div>PAL{{ data.exercise_level }}</div>
+                                </div>
+                                <image class="run-line" src="https://tangji-1303867602.cos.ap-beijing.myqcloud.com//static/images/pages_health_ast/line-bg.png" />
+                            </el-col>
+                            <el-col span="6">缺乏运动</el-col>
+                            <el-col span="6">运动较少</el-col>
+                            <el-col span="6">已有运动习惯</el-col>
+                            <el-col span="6">已养成运动习惯</el-col>
+                        </el-row>
+                    </div>
+                </div>
+
+                <div class="healthSummary-item">
+                    <div class="healthSummary-title">
+                        <div class="line"></div>
+                        <div class="healthSummary-title-text">生活方式情况</div>
+                    </div>
+                    <div class="healthSummary-detail1">
+                        <el-row class="detail3-content">
+                            <div class="scale-line"></div>
+                            <div class="scale-line" style="top: 130px"></div>
+                            <div class="scale-line" style="top: 230px"></div>
+                            <el-col :span="3">
+                                <div class="scale-content">
+                                    <div>10</div>
+                                    <div>5</div>
+                                    <div>0</div>
+                                </div>
+                            </el-col>
+                            <el-col :span="4" class="detail3-item">
+                                <div class="detail3-item-info">
+                                    <div>{{ data.diet_score }}</div>
+                                    <div :style="getScaleStyle(data.diet_score)" style="width: 100%;"></div>
+                                </div>
+                                <div>饮食</div>
+                            </el-col>
+                            <el-col :span="4" class="detail3-item">
+                                <div class="detail3-item-info">
+                                    <div>{{ data.exercise_score }}</div>
+                                    <div :style="getScaleStyle(data.exercise_score)" style="width: 100%;"></div>
+                                </div>
+                                <div>运动</div>
+                            </el-col>
+                            <el-col :span="4" class="detail3-item">
+                                <div class="detail3-item-info">
+                                    <div>{{ data.cigarette_score }}</div>
+                                    <div :style="getScaleStyle(data.cigarette_score)" style="width: 100%;"></div>
+                                </div>
+                                <div>烟草</div>
+                            </el-col>
+                            <el-col :span="4" class="detail3-item">
+                                <div class="detail3-item-info">
+                                    <div>{{ data.drug_score }}</div>
+                                    <div :style="getScaleStyle(data.drug_score)" style="width: 100%;"></div>
+                                </div>
+                                <div>酒精和药物</div>
+                            </el-col>
+                            <el-col :span="4" class="detail3-item">
+                                <div class="detail3-item-info">
+                                    <div>{{ data.pressure_score }}</div>
+                                    <div :style="getScaleStyle(data.pressure_score)" style="width: 100%;"></div>
+                                </div>
+                                <div>压力</div>
+                            </el-col>
+                        </el-row>
+                        <el-row style="margin-top: 20px;">
+                          <el-col :span="6" class="detail4-item">
+                            <div></div>
+                            <div>0-2分:不好</div>
+                          </el-col>
+                          <el-col :span="6" class="detail4-item">
+                            <div style="background-color: #F99600;"></div>
+                            <div>3-5分:一般</div>
+                          </el-col>
+                          <el-col :span="6" class="detail4-item">
+                            <div style="background-color: #1CB464;"></div>
+                            <div>6-8分:好</div>
+                          </el-col>
+                          <el-col :span="6" class="detail4-item">
+                            <div style="background-color: #55AEEF;"></div>
+                            <div>9-10分:非常好</div>
+                          </el-col>
+                        </el-row>
+                        <div style="margin-top: 20px; padding-left: 20px; padding-right: 20px;">您的生活方式综合评分为<span style="font-size: 28px; color: #E84E4D;"> {{ data.total_score }}</span> 分，生活方式{{ getLifeStr(data.total_score) }}。</div>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template v-if="viewsMode == '高血压风险评估'">
+            <div class="healthSummary" style="padding-bottom: 50px;">
+
+                <div class="healthSummary-item">
+                    <div class="healthSummary-title">
+                        <div class="line"></div>
+                        <div class="healthSummary-title-text">评估参数</div>
+                    </div>
+                    <div class="healthSummary-detail">
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="8">参数名称</el-col>
+                            <el-col :span="8" class="text-center border-left">本次结果</el-col>
+                            <el-col :span="8" class="text-center border-left">本次得分</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="8">年龄</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ data.age }}</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ data.age_score }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="8">高压（收缩压）</el-col>
+                            <el-col :span="8" :style="fontColor(data.high_pressure)" class="text-center border-left background-white1">{{ data.high_pressure }}</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ data.high_pressure_score }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="8">低压（舒张压）</el-col>
+                            <el-col :span="8" :style="fontColor(data.low_pressure)" class="text-center border-left background-white1">{{ data.low_pressure }}</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ data.low_pressure_score }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="8">BMI（体质指数）</el-col>
+                            <el-col :span="8" :style="fontColor(data.bmi)" class="text-center border-left background-white1">{{ data.bmi }}</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ data.bmi_score }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background">
+                            <el-col :span="8">高血压家族史</el-col>
+                            <el-col :span="8" :style="fontColor(data.family_hbp)" class="text-center border-left background-white1">{{ data.family_hbp }}</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ data.family_illness_score }}</el-col>
+                        </el-row>
+                    </div> 
+                </div>
+
+                <div class="healthSummary-item">
+                    <div class="healthSummary-title">
+                        <div class="line"></div>
+                        <div class="healthSummary-title-text">评估结果</div>
+                    </div>
+                    <di>
+                        您的高血压发病风险综合评分为：
+                        <span class="num-text">{{ data.hbp_score }}</span>
+                        ，在未来15年高血压发病风险为： <span class="num-text">{{ data.hp_risk }}</span>。
+                    </di> 
+                </div>
+            </div>
+        </template>
+
+        <template v-if="viewsMode == '糖尿病风险评估'">
+            <div class="healthSummary" style="padding-bottom: 50px;">
+
+                <div class="healthSummary-item">
+                    <div class="healthSummary-title">
+                        <div class="line"></div>
+                        <div class="healthSummary-title-text">评估参数</div>
+                    </div>
+                    <div class="healthSummary-detail">
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="8">参数名称</el-col>
+                            <el-col :span="8" class="text-center border-left">本次结果</el-col>
+                            <el-col :span="8" class="text-center border-left">本次得分</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="8">性别</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ getSex(data.sex) }}</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ data.sex_score }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="8">年龄</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ data.age }}</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ data.age_score }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="8">BMI（体质指数）</el-col>
+                            <el-col :span="8" :style="fontColor(data.bmi)" class="text-center border-left background-white1">{{ data.bmi }}</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ data.bmi_score }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="8">腰围</el-col>
+                            <el-col :span="8" :style="fontColor(data.waistline)" class="text-center border-left background-white1">{{ data.waistline }}</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ data.waistline_score }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="8">高压（收缩压）</el-col>
+                            <el-col :span="8" :style="fontColor(data.high_pressure)" class="text-center border-left background-white1">{{ data.high_pressure }}</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ data.high_pressure_score }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background">
+                            <el-col :span="8">糖尿病家族史</el-col>
+                            <el-col :span="8" :style="fontColor(data.family_dm)" class="text-center border-left background-white1">{{ data.family_dm }}</el-col>
+                            <el-col :span="8" class="text-center border-left background-white1">{{ data.family_dm_score }}</el-col>
+                        </el-row>
+                    </div> 
+                </div>
+
+                <div class="healthSummary-item">
+                    <div class="healthSummary-title">
+                        <div class="line"></div>
+                        <div class="healthSummary-title-text">评估结果</div>
+                    </div>
+                    <di>
+                        您的综合评分为：
+                        <span class="num-text">{{ data.dm_score }}</span>
+                        ，{{ data.dm_risk }}
+                    </di> 
+                </div>
+            </div>
+        </template>
+
+        <template v-if="viewsMode == '脑卒中风险评估'">
+            <div class="healthSummary" style="padding-bottom: 50px;">
+
+                <div class="healthSummary-item">
+                    <div class="healthSummary-title">
+                        <div class="line"></div>
+                        <div class="healthSummary-title-text">评估参数</div>
+                    </div>
+                    <div class="healthSummary-detail">
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="4">序号</el-col>
+                            <el-col :span="14" class="text-center border-left">描述</el-col>
+                            <el-col :span="6" class="text-center border-left">本次结果</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="4">1</el-col>
+                            <el-col :span="14" class="text-center border-left background-white">曾患脑卒中或短暂性脑缺血发作病史</el-col>
+                            <el-col :span="6" style="color: #e84e4d; height: 34px" class="text-center border-left background-white1">{{ isTrueFiled(data.stroke_before) }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="4">2</el-col>
+                            <el-col :span="14" class="text-center border-left background-white">高血压病史或体检血压数据值≥140/90mmHg或正在服用降压药</el-col>
+                            <el-col :span="6" style="color: #e84e4d; height: 34px" class="text-center border-left background-white1">{{ isTrueFiled(data.hbp_before) }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="4">3</el-col>
+                            <el-col :span="14" class="text-center border-left background-white">心房颤动或心脏瓣膜病</el-col>
+                            <el-col :span="6" style="color: #e84e4d; height: 34px" class="text-center border-left background-white1">{{ isTrueFiled(data.heart_disease_before) }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="4">4</el-col>
+                            <el-col :span="14" class="text-center border-left background-white">现患糖尿病</el-col>
+                            <el-col :span="6" style="color: #e84e4d; height: 34px" class="text-center border-left background-white1">{{ isTrueFiled(data.dm_now) }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="4">5</el-col>
+                            <el-col :span="14" class="text-center border-left background-white">吸烟</el-col>
+                            <el-col :span="6" style="color: #e84e4d; height: 34px" class="text-center border-left background-white1">{{ isTrueFiled(data.smoke_now) }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="4">6</el-col>
+                            <el-col :span="14" class="text-center border-left background-white">高血脂病史或体检血脂数据值异常</el-col>
+                            <el-col :span="6" style="color: #e84e4d; height: 34px" class="text-center border-left background-white1">{{ isTrueFiled(data.hlp_before) }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="4">7</el-col>
+                            <el-col :span="14" class="text-center border-left background-white">很少进行体育活动（每周运动次数少于3天或基本不运动）</el-col>
+                            <el-col :span="6" style="color: #e84e4d; height: 34px" style="color: #e84e4d" class="text-center border-left background-white1">{{ isTrueFiled(data.less_exercise) }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background border-bottom">
+                            <el-col :span="4">8</el-col>
+                            <el-col :span="14" class="text-center border-left background-white">BMI≥26kg/m2</el-col>
+                            <el-col :span="6" style="color: #e84e4d; height: 34px" class="text-center border-left background-white1">{{ isTrueFiled(data.high_bmi) }}</el-col>
+                        </el-row>
+                        <el-row class="healthSummary-detail-item healthSummary-detail-item-background">
+                            <el-col :span="4">9</el-col>
+                            <el-col :span="14" class="text-center border-left background-white">脑卒中家族史</el-col>
+                            <el-col :span="6" style="color: #e84e4d; height: 34px" class="text-center border-left background-white1">{{ isTrueFiled(data.family_stroke) }}</el-col>
+                        </el-row>
+                    </div> 
+                </div>
+
+                <div class="healthSummary-item">
+                    <div class="healthSummary-title">
+                        <div class="line"></div>
+                        <div class="healthSummary-title-text">评估结果</div>
+                    </div>
+                    <di>
+                        您在未来发生脑卒中的风险处于：
+                        <span class="num-text">{{ data.stroke_risk }}</span>
+                        ，请关注自身健康，有任何不适请及时到医院做进一步的检查。
+                    </di> 
+                </div>
+            </div>
+        </template>
+
+        <template v-if="viewsMode == '封底'">
+            <div class="healthSummary" style="padding-bottom: 50px; display: flex; flex-direction: column;align-items: center;">
+                <div style="margin-top: 80px; font-size: 20px; font-weight: 500;">您的健康 就是我们的心愿</div>
+                <image style="width: 300px; margin-top: 50px; margin-bottom: 50px;" src="https://tangji-1303867602.cos.ap-beijing.myqcloud.com/static/images/pages_health_ast/logo.png"/>
+                <div style="line-height: 44px;">上海糖吉术创科技有限公司</div>
+                <div style="line-height: 44px;">地址：上海市闵行区陈行公路2388号18幢502室</div>
+                <div style="line-height: 44px;">电话：0571-86702039</div>
+            </div>
+        </template>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                viewsMode: '封皮',
+                data: {}
+            },
+            mounted() {
+                const decodeStr = atob(window.location.search.substring(1, window.location.search.length));
+                const data = this.getUrlParam('?' + decodeStr, 'user_id')
+                fetch(window.config.SERVERS_URL + '/api/evaluation_report/?patient=' + data + '&ordering=-updated_at')
+                    .then(ret => ret.json())
+                    .then(json => {
+                        this.data = json.results[0]
+                    })
+
+                // const data = this.getUrlParam('data')
+                // // base64解码
+                // const decodeStr = atob(data);
+                // // 转字符串
+                // const dataJson = JSON.parse(decodeURI(decodeStr))
+                // this.data = dataJson
+            },
+
+            methods: {
+                //获取地址栏属性，name 为参数名称
+                getUrlParam(search, name) {
+                    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+                    var r = search.substr(1).match(reg); //匹配目标参数
+                    if (r != null) return unescape(r[2]);
+                    return null; //返回参数值
+                },
+                getSex(sex) {
+                    if (sex == 'M') {
+                        return '男'
+                    }
+                    return '女'
+                },
+                jsDateFormatter(dateInput, isDay = false) {  // dateInput 是一个 js 的 Date 对象
+                    var dateInfo = new Date(dateInput)
+                    var year = dateInfo.getFullYear();
+                    var month = dateInfo.getMonth() + 1;
+                    var theDate = dateInfo.getDate();
+                    var hour = dateInfo.getHours();
+                    var minute = dateInfo.getMinutes();
+                    if ( month < 10 ) {
+                        month = '0' + month;
+                    }
+
+                    if ( theDate < 10 ) {
+                        theDate = '0' + theDate;
+                    }
+
+                    if ( hour < 10 ) {
+                        hour = '0' + hour;
+                    }
+
+                    if ( minute < 10 ) {
+                        minute = '0' + minute;
+                    }
+                    if (isDay) {
+                        return year +"-"+ month +"-" + theDate 
+                    }
+                    return year +"-"+ month +"-" + theDate + " "+ hour +":"+ minute;
+                },
+                getScaleStyle(score) {
+                    var background
+                    if (score <= 2) {
+                        background = '#E84E4D'
+                    } else if (score <= 5) {
+                        background = '#F99600'
+                    } else if (score <= 8) {
+                        background = '#1CB464'
+                    } else {
+                        background = '#55AEEF'
+                    }
+
+                    return 'height: ' + 20 * score+ 'px; background-color: ' + background
+                },
+                fontColor(str) {
+                    if (str.indexOf('↑') >= 0) {
+                        return 'color: #e84e4d'
+                    }
+                    if (str.indexOf('↓') >= 0) {
+                        return 'color: #219678'
+                    }
+                    return ''
+                },
+                isTrueFiled(_is) {
+                    return String(_is) == 'true' ? '✓' : ""
+                },
+                getLifeStr(score) {
+                    if (score <= 5) {
+                        return '不好'
+                    } else if (score <= 8) {
+                        return "比较健康"
+                    }
+                    return '很健康'
+                }
+            },  
+        })
+    </script>
+</body>
+</html>
